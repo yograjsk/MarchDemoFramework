@@ -1,9 +1,13 @@
 import time
 import unittest
 from selenium import webdriver
+from selenium.common.exceptions import ElementNotVisibleException, ElementNotSelectableException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 from commonUtils.commonUtilities import commonUtils
 
 
@@ -23,8 +27,11 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         cls.driver = cu.getBrowser(browserToLaunch)
         cls.driver.implicitly_wait(impliciteWaitTime)
         cls.action = ActionChains(cls.driver)
+        cls.ssPath = configProperties["ssPath"]
+        cls.ssExt = configProperties["ssExt"]
 
     def setUp(self):
+        cu = commonUtils()
         print("\nSetup Method - Executed before every test method")
         # self.driver.get("https://opensource-demo.orangehrmlive.com/")
         # self.driver.get("http://localhost:81/")
@@ -32,15 +39,20 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         self.driver.find_element_by_name("txtUsername").send_keys("user")  #user
         self.driver.find_element_by_name("txtPassword").send_keys("password123")   #password123
         self.driver.find_element_by_name("Submit").click()
+        loggedIn = self.driver.find_element(By.ID, "welcome").is_displayed()
+        if loggedIn:
+            cu.takeScreenshot(self.driver, self.ssPath+"UserLoggedInSuccessfully")
+            # self.driver.save_screenshot("UserLoggedInSuccessfully.png")
+        else:
+            # self.driver.save_screenshot("UserFailedToLogIn.png")
+            cu.takeScreenshot(self.driver, self.ssPath+"UserFailedToLogIn")
 
     # URL to add user: https://opensource-demo.orangehrmlive.com/index.php/admin/view
 
-    def test_scenario1(self): #add user
+    def scenario1(self): #add user
         cu = commonUtils()
         # userToAdd = userToAddDelete
         userToAdd = self.UserToAddDelete
-        # print("First test Scenario")
-        # print(self.driver.title)
         self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/admin/viewSystemUsers")
         self.driver.find_element(By.ID, "btnAdd").click()
         self.driver.find_element(By.XPATH, "//h1[@id='UserHeading' and text()='Add User']").is_displayed()
@@ -55,12 +67,27 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         # self.driver.find_element(By.ID, "btnSave").click()
         recordAdded = self.driver.find_element(By.XPATH, "//table[@id='resultTable']//a[text()='"+userToAdd+"']/../..//input").is_displayed()
         print("Is user Added?: " + str(recordAdded))
+        self.driver.save_screenshot("NewUserCreated.png")
 
-    # def test_scenario2(self): #edit user
-    #     print("Second test Scenario")
-    #     print(self.driver.title)
-    #
-    def test_scenario3(self): #Delete user
+    def test_case1_Upload(self): #upload file
+        cu = commonUtils()
+        self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/admin/pimCsvImport")
+        self.driver.find_element(By.ID, "pimCsvImport_csvFile").\
+            send_keys("C:\\Users\\USER\\PycharmProjects\\MarchDemoFramework\\InputData\\importData(2).csv")
+        cu.takeScreenshot("fileUpload")
+        # print("Second test Scenario")
+        # print(self.driver.title)
+
+    def test_case2_Download(self): #upload file
+        cu = commonUtils()
+        self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/admin/pimCsvImport")
+        self.driver.find_element(By.LINK_TEXT, "Download").click()
+        cu.takeScreenshot("fileDownload")
+
+        # print("Second test Scenario")
+        # print(self.driver.title)
+
+    def scenario3(self): #Delete user
         cu = commonUtils()
         self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/admin/viewSystemUsers")
         # userToDelete = userToA7ddDelete
@@ -76,23 +103,36 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         print("Is user deleted: " + str(recordDeleted))
         # print("Third test Scenario")
         # print(self.driver.title)
+        self.driver.save_screenshot("NewUserCreated.png")
 
-    #
     # def test_scenario4(self):
     #     print("Fourth test Scenario")
     #     print(self.driver.title)
 
     def tearDown(self):
         print("TearDown Method - Executed after every test method")
-        # self.driver.find_element(By.ID, "welcome").click()
-        # time.sleep(5)
-        # self.driver.find_element_by_xpath("//a[@href='/index.php/auth/logout']").click()
-        # if(self.driver.find_element_by_name("txtUsername").is_displayed()):
-        #     print("User LOGGED OUT Successfully")
-        #     return True
-        # else:
-        #     print("User Could NOT LOGOUT of the application")
-        #     return False
+        self.driver.find_element(By.ID, "welcome").click()
+
+        # Explicit wait
+        # wait = WebDriverWait(self.driver, 10)
+        # logout = wait.until(EC.element_to_be_clickable((By.LINK_TEXT, "Logout")))
+        # logout.click()
+
+        #Fluent wait
+        # wait = WebDriverWait(self.driver, 10, poll_frequency=1,
+        #                      ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
+        # logout = wait.until(EC.element_to_be_clickable((By.LINK_TEXT, "Logout")))
+        # logout.click()
+
+        self.driver.find_element_by_link_text("Logout").click()
+        if(self.driver.find_element_by_name("txtUsername").is_displayed()):
+            print("User LOGGED OUT Successfully")
+            self.driver.save_screenshot("UserLoggedOutSuccessfully.png")
+            return True
+        else:
+            print("User Could NOT LOGOUT of the application")
+            self.driver.save_screenshot("UserCouldNotLogOut.png")
+            return False
 
     @classmethod
     def tearDownClass(cls):
@@ -101,3 +141,31 @@ class UnitTestFrameworkDemo(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+
+'''
+waits:
+implicite wait - wait for certain time untill some condition is satisfied - NOT A HARD WAIT (30 sec time)
+explicite wait - 
+fluent wait - flexibility, different parameters, can override different exceptions, poling time, poling frequency
+
+Explicite wait example code:
+=========
+wait = WebDriverWait(self.driver, 10)
+welcome = wait.until(EC.element_to_be_clickable((By.ID,"welcome")))
+welcome.click()
+
+Fluent wait
+============
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import *
+
+driver = webdriver.Firefox()
+# Load some webpage
+wait = WebDriverWait(driver, 10, poll_frequency=1, ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
+element = wait.until(EC.element_to_be_clickable((By.XPATH, "//div")))
+'''
