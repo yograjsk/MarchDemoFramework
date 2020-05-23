@@ -45,12 +45,13 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         self.assertTrue(self.driver.find_element(By.ID, "welcome").is_displayed(), "The user is not able to login successfully")
         self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/recruitment/addCandidate")
 
-        self.driver.find_element(By.ID, "addCandidate_appliedDate").clear()
-        self.driver.find_element(By.ID, "addCandidate_appliedDate").send_keys("2021-10-20")
+        self.driver.find_element(By.ID, "addCandidate_appliedDate").click()
+        self.selectDate("1 Jan 2022", self.driver)
 
-        # self.driver.find_element(By.ID, "addCandidate_appliedDate").click()
+        # Normal way if date field is allwoing you to send keys, the take can be set with below line of code
+        # self.driver.find_element(By.ID, "addCandidate_appliedDate").clear()
+        # self.driver.find_element(By.ID, "addCandidate_appliedDate").send_keys("2021-10-20")
 
-        # self.selectDate("1 Jan 2022", self.driver)
         # The converntional way to checking if login happened
         # loggedIn = self.driver.find_element(By.ID, "welcome").is_displayed()
         # if loggedIn:
@@ -67,18 +68,18 @@ class UnitTestFrameworkDemo(unittest.TestCase):
     # def getTodaysTimeStamp(self):
     #     return date.today().strftime('%Y%m%d')
 
-    # def selectDate(self, dateValue, driver):
-    #     cu = commonUtils()
-    #     self.driver.find_element(By.ID, "ui-datepicker-div").is_displayed()
-    #     dateSplitted = dateValue.split()
-    #     print(dateSplitted)
-    #     day = dateSplitted[0]
-    #     month = dateSplitted[1]
-    #     year = dateSplitted[2]
-    #     cu.selectDropdownValue(By.CLASS_NAME, "ui-datepicker-month", month, self.driver)
-    #     cu.selectDropdownValue(By.CLASS_NAME, "ui-datepicker-year", year, self.driver)
-    #     # self.driver.find_element(By.XPATH, "//table[@class='ui-datepicker-calendar']//a[text()='"+day+"']").click()
-    #     self.driver.find_element(By.LINK_TEXT, day).click()
+    def selectDate(self, dateValue, driver):
+        cu = commonUtils()
+        self.driver.find_element(By.ID, "ui-datepicker-div").is_displayed()
+        dateSplitted = dateValue.split()
+        print(dateSplitted)
+        day = dateSplitted[0]
+        month = dateSplitted[1]
+        year = dateSplitted[2]
+        cu.selectDropdownValue(By.CLASS_NAME, "ui-datepicker-month", month, self.driver)
+        cu.selectDropdownValue(By.CLASS_NAME, "ui-datepicker-year", year, self.driver)
+        # self.driver.find_element(By.XPATH, "//table[@class='ui-datepicker-calendar']//a[text()='"+day+"']").click()
+        self.driver.find_element(By.LINK_TEXT, day).click()
 
     def scenario1(self): #add user
         cu = commonUtils()
