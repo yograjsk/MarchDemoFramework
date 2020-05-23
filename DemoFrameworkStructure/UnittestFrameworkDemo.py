@@ -1,5 +1,7 @@
 import time
 import unittest
+from datetime import date
+
 from selenium import webdriver
 from selenium.common.exceptions import ElementNotVisibleException, ElementNotSelectableException
 from selenium.webdriver import ActionChains
@@ -39,15 +41,44 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         self.driver.find_element_by_name("txtUsername").send_keys("user")  #user
         self.driver.find_element_by_name("txtPassword").send_keys("password123")   #password123
         self.driver.find_element_by_name("Submit").click()
-        loggedIn = self.driver.find_element(By.ID, "welcome").is_displayed()
-        if loggedIn:
-            cu.takeScreenshot(self.driver, self.ssPath+"UserLoggedInSuccessfully")
-            # self.driver.save_screenshot("UserLoggedInSuccessfully.png")
-        else:
-            # self.driver.save_screenshot("UserFailedToLogIn.png")
-            cu.takeScreenshot(self.driver, self.ssPath+"UserFailedToLogIn")
+        # Using assert statements to check if user is logged in successfully or not
+        self.assertTrue(self.driver.find_element(By.ID, "welcome").is_displayed(), "The user is not able to login successfully")
+        self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/recruitment/addCandidate")
 
-    # URL to add user: https://opensource-demo.orangehrmlive.com/index.php/admin/view
+        self.driver.find_element(By.ID, "addCandidate_appliedDate").clear()
+        self.driver.find_element(By.ID, "addCandidate_appliedDate").send_keys("2021-10-20")
+
+        # self.driver.find_element(By.ID, "addCandidate_appliedDate").click()
+
+        # self.selectDate("1 Jan 2022", self.driver)
+        # The converntional way to checking if login happened
+        # loggedIn = self.driver.find_element(By.ID, "welcome").is_displayed()
+        # if loggedIn:
+        #     cu.takeScreenshot(self.driver, self.ssPath+"UserLoggedInSuccessfully")
+        #     # self.driver.save_screenshot("UserLoggedInSuccessfully.png")
+        # else:
+        #     # self.driver.save_screenshot("UserFailedToLogIn.png")
+        #     cu.takeScreenshot(self.driver, self.ssPath+"UserFailedToLogIn")
+
+    def test_sample(self):
+        print("sample test method")
+
+    # Ignore below method
+    # def getTodaysTimeStamp(self):
+    #     return date.today().strftime('%Y%m%d')
+
+    # def selectDate(self, dateValue, driver):
+    #     cu = commonUtils()
+    #     self.driver.find_element(By.ID, "ui-datepicker-div").is_displayed()
+    #     dateSplitted = dateValue.split()
+    #     print(dateSplitted)
+    #     day = dateSplitted[0]
+    #     month = dateSplitted[1]
+    #     year = dateSplitted[2]
+    #     cu.selectDropdownValue(By.CLASS_NAME, "ui-datepicker-month", month, self.driver)
+    #     cu.selectDropdownValue(By.CLASS_NAME, "ui-datepicker-year", year, self.driver)
+    #     # self.driver.find_element(By.XPATH, "//table[@class='ui-datepicker-calendar']//a[text()='"+day+"']").click()
+    #     self.driver.find_element(By.LINK_TEXT, day).click()
 
     def scenario1(self): #add user
         cu = commonUtils()
@@ -69,7 +100,7 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         print("Is user Added?: " + str(recordAdded))
         self.driver.save_screenshot("NewUserCreated.png")
 
-    def test_case1_Upload(self): #upload file
+    def atest_case1_Upload(self): #upload file
         cu = commonUtils()
         self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/admin/pimCsvImport")
         self.driver.find_element(By.ID, "pimCsvImport_csvFile").\
@@ -78,7 +109,7 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         # print("Second test Scenario")
         # print(self.driver.title)
 
-    def test_case2_Download(self): #upload file
+    def atest_case2_Download(self): #upload file
         cu = commonUtils()
         self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/admin/pimCsvImport")
         self.driver.find_element(By.LINK_TEXT, "Download").click()
@@ -111,7 +142,7 @@ class UnitTestFrameworkDemo(unittest.TestCase):
 
     def tearDown(self):
         print("TearDown Method - Executed after every test method")
-        self.driver.find_element(By.ID, "welcome").click()
+        # self.driver.find_element(By.ID, "welcome").click()
 
         # Explicit wait
         # wait = WebDriverWait(self.driver, 10)
@@ -124,15 +155,15 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         # logout = wait.until(EC.element_to_be_clickable((By.LINK_TEXT, "Logout")))
         # logout.click()
 
-        self.driver.find_element_by_link_text("Logout").click()
-        if(self.driver.find_element_by_name("txtUsername").is_displayed()):
-            print("User LOGGED OUT Successfully")
-            self.driver.save_screenshot("UserLoggedOutSuccessfully.png")
-            return True
-        else:
-            print("User Could NOT LOGOUT of the application")
-            self.driver.save_screenshot("UserCouldNotLogOut.png")
-            return False
+        # self.driver.find_element_by_link_text("Logout").click()
+        # if(self.driver.find_element_by_name("txtUsername").is_displayed()):
+        #     print("User LOGGED OUT Successfully")
+        #     self.driver.save_screenshot("UserLoggedOutSuccessfully.png")
+        #     return True
+        # else:
+        #     print("User Could NOT LOGOUT of the application")
+        #     self.driver.save_screenshot("UserCouldNotLogOut.png")
+        #     return False
 
     @classmethod
     def tearDownClass(cls):
