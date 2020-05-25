@@ -1,3 +1,4 @@
+import datetime
 import time
 import unittest
 from datetime import date
@@ -34,6 +35,8 @@ class UnitTestFrameworkDemo(unittest.TestCase):
 
     def setUp(self):
         cu = commonUtils()
+        timestamp = self.getTodaysTimeStamp()
+        self.getValues("a","b","c","d","e","f","g",)
         print("\nSetup Method - Executed before every test method")
         # self.driver.get("https://opensource-demo.orangehrmlive.com/")
         # self.driver.get("http://localhost:81/")
@@ -42,7 +45,7 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         self.driver.find_element_by_name("txtPassword").send_keys("password123")   #password123
         self.driver.find_element_by_name("Submit").click()
         # Using assert statements to check if user is logged in successfully or not
-        self.assertTrue(self.driver.find_element(By.ID, "welcome").is_displayed(), "The user is not able to login successfully")
+        self.assertTrue(self.driver.find_element(By.ID, "welcome1").is_displayed(), "The user is not able to login successfully")
         self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/recruitment/addCandidate")
 
         self.driver.find_element(By.ID, "addCandidate_appliedDate").click()
@@ -64,9 +67,16 @@ class UnitTestFrameworkDemo(unittest.TestCase):
     def test_sample(self):
         print("sample test method")
 
+    # def getValues(self, *values):
+    #     print(len(values))
+    #     for i in values:
+    #         print(i, "index of it is", values.index(i))
+
     # Ignore below method
     # def getTodaysTimeStamp(self):
-    #     return date.today().strftime('%Y%m%d')
+    #     now = datetime.datetime.now()
+    #     return (str(now.hour)+str(now.minute)+str(now.second))
+        # return date.today().strftime('%Y%m%d%-h%M%S%s')
 
     def selectDate(self, dateValue, driver):
         cu = commonUtils()
@@ -101,7 +111,7 @@ class UnitTestFrameworkDemo(unittest.TestCase):
         print("Is user Added?: " + str(recordAdded))
         self.driver.save_screenshot("NewUserCreated.png")
 
-    def atest_case1_Upload(self): #upload file
+    def test_case1_Upload(self): #upload file
         cu = commonUtils()
         self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/admin/pimCsvImport")
         self.driver.find_element(By.ID, "pimCsvImport_csvFile").\
