@@ -79,7 +79,7 @@ class commonUtils():
             # self.browser = webdriver.Chrome(chrome_options=chrome_options,
             #         executable_path="C:\\Users\\USER\\PycharmProjects\\March2020\\drivers\\chromedriver.exe")
             # return webdriver.Chrome(executable_path="C:/Users/USER/PycharmProjects/March2020/drivers/chromedriver.exe")
-            return webdriver.Chrome(executable_path="../drivers/chromedriver.exe")
+            return webdriver.Chrome(executable_path="drivers/chromedriver.exe")
         elif browserName in ("Firefox", "FF", "firefox", "ff"):
             # self.browser = webdriver.Firefox(executable_path="C:\\Users\\USER\\PycharmProjects\\March2020\\drivers\\geckodriver.exe")
             fireFoxOptions = webdriver.FirefoxOptions()
@@ -102,3 +102,6 @@ class commonUtils():
     def checkElementDisplayed(self, ByType, ByValue, driver):
         self.waitExplicitely(driver, ByType, ByValue, 5)
         return driver.find_element(ByType, ByValue).is_displayed()
+
+    def getElement(self, ByType, ByValue, driver):
+        return driver.find_element(ByType, ByValue)
