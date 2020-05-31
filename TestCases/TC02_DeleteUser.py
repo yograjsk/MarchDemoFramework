@@ -25,10 +25,10 @@ class TC02_DeleteUser(unittest.TestCase):
         return self.driver
 
     def test_DeleteUser(self):
-        cu = commonUtils()
+        # cu = commonUtils()
         self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/admin/viewSystemUsers")
         # userToDelete = userToA7ddDelete
-        userToDelete = self.UserToAddDelete
+        userToDelete = "user"+self.cu.getTodaysTimeStamp()
         self.driver.find_element(By.ID, "resultTable").is_displayed()
         self.driver.find_element(By.XPATH, "//table[@id='resultTable']//a[text()='"+userToDelete+"']/../..//input").click()
         self.action.click(self.driver.find_element(By.ID, "btnDelete")).perform()
@@ -43,9 +43,10 @@ class TC02_DeleteUser(unittest.TestCase):
         self.driver.save_screenshot("NewUserDeleted.png")
 
     @classmethod
-    def tearDownClass(self):
-        logout = Logout()
-        logout.logout(self.getDriver())
+    def tearDownClass(cls):
+        lo = Logout()
+        driver = cls.getDriver(cls)
+        cls.assertTrue(lo.logout(driver), "The user is not able to Logout successfully")
 
 if __name__ == '__main__':
     unittest.main()

@@ -11,11 +11,12 @@ class Logout():
 
     def logout(self, driver):
         OR = ObjectRepo()
-        wait = WebDriverWait(driver, 10, poll_frequency=1,
-                             ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
-        logout = wait.until(EC.element_to_be_clickable((By.LINK_TEXT, "Logout")))
-        logout.click()
-        self.assertTrue(self.driver.find_element(OR.username_txt).is_displayed(), "The user is not able to login successfully")
+        cu = commonUtils()
+        cu.click(By.ID, "welcome", driver)
+        cu.click(By.LINK_TEXT, "Logout", driver)
+        check = cu.checkElementDisplayed(By.NAME, OR.username_txt_name, driver)
+        driver.close()
+        return check
 
 
 

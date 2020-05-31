@@ -29,7 +29,7 @@ class TC03_HandleSimpleAlerts(unittest.TestCase):
     def test_HandleASimpleAlert(self):
         self.driver.get("https://www.seleniumeasy.com/test/javascript-alert-box-demo.html")
         self.driver.find_element(By.CLASS_NAME, "btn.btn-default").click()
-        time.sleep(5)
+        time.sleep(2)
         simpleAlert = self.driver.switch_to.alert
         alertText = simpleAlert.text
         print(alertText)
@@ -37,9 +37,8 @@ class TC03_HandleSimpleAlerts(unittest.TestCase):
         print("Alert box Accepted")
 
     @classmethod
-    def tearDownClass(self):
-        logout = Logout()
-        logout.logout(self.getDriver())
+    def tearDownClass(cls):
+        cls.getDriver(cls).close()
 
 if __name__ == '__main__':
     unittest.main()

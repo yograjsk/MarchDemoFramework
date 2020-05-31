@@ -28,9 +28,10 @@ class TC05_DownloadFile(unittest.TestCase):
         # cu.takeScreenshot("fileDownload")
 
     @classmethod
-    def tearDownClass(self):
-        logout = Logout()
-        logout.logout(self.getDriver())
+    def tearDownClass(cls):
+        lo = Logout()
+        driver = cls.getDriver(cls)
+        cls.assertTrue(lo.logout(driver), "The user is not able to Logout successfully")
 
 if __name__ == '__main__':
     unittest.main()

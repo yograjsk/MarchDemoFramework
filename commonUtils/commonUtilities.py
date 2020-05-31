@@ -65,31 +65,26 @@ class commonUtils():
     def getBrowser(self, browserName):
 
         if browserName in ("Chrome", "chrome", "chromeheadless"):
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument("--disable-infobar")
-            chrome_options.add_argument("--window-size=1920,1080")
-            # chrome_options.add_argument("--start-maximized")
-            if browserName == "chromeheadless":
-                chrome_options.add_argument("--headless")
+            # chrome_options = webdriver.ChromeOptions()
+            # chrome_options.add_argument("--disable-infobar")
+            # chrome_options.add_argument("--window-size=1920,1080")
+            # # chrome_options.add_argument("--start-maximized")
+            # if browserName == "chromeheadless":
+            #     chrome_options.add_argument("--headless")
 
             # capabilities = DesiredCapabilities.CHROME.copy()
             # capabilities['acceptSslCerts'] = True
             # capabilities['acceptInsecureCerts'] = True
 
-            self.browser = webdriver.Chrome(chrome_options=chrome_options,
-                    executable_path="C:\\Users\\USER\\PycharmProjects\\March2020\\drivers\\chromedriver.exe")
-            # self.browser = webdriver.Chrome(executable_path="C:\\Users\\USER\\PycharmProjects\\March2020\\drivers\\chromedriver.exe")
+            # self.browser = webdriver.Chrome(chrome_options=chrome_options,
+            #         executable_path="C:\\Users\\USER\\PycharmProjects\\March2020\\drivers\\chromedriver.exe")
+            # return webdriver.Chrome(executable_path="C:/Users/USER/PycharmProjects/March2020/drivers/chromedriver.exe")
+            return webdriver.Chrome(executable_path="../drivers/chromedriver.exe")
         elif browserName in ("Firefox", "FF", "firefox", "ff"):
             # self.browser = webdriver.Firefox(executable_path="C:\\Users\\USER\\PycharmProjects\\March2020\\drivers\\geckodriver.exe")
             fireFoxOptions = webdriver.FirefoxOptions()
             # fireFoxOptions.add_argument("--headless")
-
-            brower = webdriver.Firefox(firefox_options=fireFoxOptions)
-
-            brower.get('https://pythonbasics.org')
-            print(brower.page_source)
-        return self.browser
-
+            return webdriver.Firefox(firefox_options=fireFoxOptions)
 
     def takeScreenshot(self, driver, fileName):
         # driver.save_screenshot(self.__sspath+fileName+".png")
@@ -100,9 +95,10 @@ class commonUtils():
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
         return wait.until(EC.element_to_be_clickable((ByType, ByValue)))
 
-    def waitExplicitely(self, driver, ByType, ByValue, time=10):
+    def waitExplicitely(self, driver, ByType, ByValue, time=5):
         wait = WebDriverWait(driver, time)
         return wait.until(EC.element_to_be_clickable((ByType, ByValue)))
 
     def checkElementDisplayed(self, ByType, ByValue, driver):
-        driver.find_element(ByType, ByValue).is_displayed()
+        self.waitExplicitely(driver, ByType, ByValue, 5)
+        return driver.find_element(ByType, ByValue).is_displayed()

@@ -35,9 +35,10 @@ class TC04_UploadFile(unittest.TestCase):
 
 
     @classmethod
-    def tearDownClass(self):
-        logout = Logout()
-        logout.logout(self.getDriver())
+    def tearDownClass(cls):
+        lo = Logout()
+        driver = cls.getDriver(cls)
+        cls.assertTrue(lo.logout(driver), "The user is not able to Logout successfully")
 
 if __name__ == '__main__':
     unittest.main()

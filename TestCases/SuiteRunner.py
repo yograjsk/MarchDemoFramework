@@ -1,4 +1,9 @@
+import os
 import unittest
+
+import HtmlTestRunner
+import xmlrunner as xmlrunner
+
 from TestCases.TC01_AddUser import TC01_AddUser
 from TestCases.TC02_DeleteUser import TC02_DeleteUser
 from TestCases.TC03_HandleSimpleAlerts import TC03_HandleSimpleAlerts
@@ -12,6 +17,7 @@ testCase3 = unittest.TestLoader().loadTestsFromTestCase(TC03_HandleSimpleAlerts)
 testCase4 = unittest.TestLoader().loadTestsFromTestCase(TC04_UploadFile)
 testCase5 = unittest.TestLoader().loadTestsFromTestCase(TC05_DownloadFile)
 
+# Create Test Suites
 smokeTestSuite = unittest.TestSuite([testCase1, testCase4])
 regressionTestSuite = unittest.TestSuite([testCase1, testCase2, testCase5])
 functionalTestSuite = unittest.TestSuite([testCase1, testCase2, testCase3, testCase4, testCase5])
@@ -21,15 +27,30 @@ cu = commonUtils()
 config = cu.readProperties("C:\\Users\\USER\\PycharmProjects\\MarchDemoFramework\\commonUtils\\config.properties")
 suiteName = config["suiteName"]
 
+# Open report file
+outputFile = open(os.getcwd()+"/SuiteReport/SuiteReport.html", "w")
+# runner = HtmlTestRunner
+
+# test_runner = HtmlTestRunner.HTMLTestRunner(output="../Reports/NewHTMLReports", verbosity=2)
+test_runner = HtmlTestRunner.HTMLTestRunner(stream=outputFile, report_title=suiteName+" TEST REPORT")
 if suiteName == "SMOKE":
     print("Runing SMOKE Test Suite")
-    unittest.TextTestRunner().run(smokeTestSuite)
+    test_runner.run(smokeTestSuite)
+    # unittest.TextTestRunner().run(smokeTestSuite)
 elif suiteName == "REGRESSION":
     print("Runing REGRESSION Test Suite")
-    unittest.TextTestRunner().run(regressionTestSuite)
+    test_runner.run(regressionTestSuite)
+    # unittest.TextTestRunner().run(regressionTestSuite)
 elif suiteName == "FUNCTIONAL":
     print("Runing FUNCTIONAL Test Suite")
-    unittest.TextTestRunner().run(functionalTestSuite)
+    test_runner.run(functionalTestSuite)
+    # unittest.TextTestRunner().run(functionalTestSuite)
 elif suiteName == "INTEGRATION":
     print("Runing INTEGRATION Test Suite")
-    unittest.TextTestRunner().run(integrationTestSuite)
+    test_runner.run(integrationTestSuite)
+    # unittest.TextTestRunner().run(integrationTestSuite)
+
+# unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output="../Reports/HTMLReports"))
+# unittest.main(testRunner=xmlrunner.XMLTestRunner(output="../Reports/XMLReports"))
+
+
