@@ -25,8 +25,9 @@ class commonUtils():
         return self.__sspath
 
     def getTodaysTimeStamp(self):
-        now = datetime.datetime.now()
-        return (str(now.hour)+str(now.minute)+str(now.second))
+        # now = datetime.datetime.now()
+        # return (str(now.hour)+str(now.minute)+str(now.second))
+        return "0202"
 
     def sendkeys(self, ByType, ByValue, valueToPass, driver):
         driver.find_element(ByType, ByValue).send_keys(valueToPass)
@@ -65,21 +66,22 @@ class commonUtils():
     def getBrowser(self, browserName):
 
         if browserName in ("Chrome", "chrome", "chromeheadless"):
-            # chrome_options = webdriver.ChromeOptions()
-            # chrome_options.add_argument("--disable-infobar")
-            # chrome_options.add_argument("--window-size=1920,1080")
-            # # chrome_options.add_argument("--start-maximized")
-            # if browserName == "chromeheadless":
-            #     chrome_options.add_argument("--headless")
-
             # capabilities = DesiredCapabilities.CHROME.copy()
             # capabilities['acceptSslCerts'] = True
             # capabilities['acceptInsecureCerts'] = True
 
-            # self.browser = webdriver.Chrome(chrome_options=chrome_options,
-            #         executable_path="C:\\Users\\USER\\PycharmProjects\\March2020\\drivers\\chromedriver.exe")
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument("--disable-infobar")
+            chrome_options.add_argument("--window-size=1920,1080")
+            # chrome_options.add_argument("--start-maximized")
+            if browserName == "chromeheadless":
+                chrome_options.add_argument("--headless")
+            return webdriver.Chrome(chrome_options=chrome_options,
+                    # executable_path="C:\\Users\\USER\\PycharmProjects\\MarchDemoFramework\\drivers\\chromedriver.exe")
+                    # executable_path="drivers/chromedriver.exe")
+                    executable_path="../drivers/chromedriver.exe")
             # return webdriver.Chrome(executable_path="C:/Users/USER/PycharmProjects/March2020/drivers/chromedriver.exe")
-            return webdriver.Chrome(executable_path="drivers/chromedriver.exe")
+            # return webdriver.Chrome(executable_path="drivers/chromedriver.exe")
         elif browserName in ("Firefox", "FF", "firefox", "ff"):
             # self.browser = webdriver.Firefox(executable_path="C:\\Users\\USER\\PycharmProjects\\March2020\\drivers\\geckodriver.exe")
             fireFoxOptions = webdriver.FirefoxOptions()

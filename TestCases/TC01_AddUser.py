@@ -11,9 +11,6 @@ from commonUtils.commonUtilities import commonUtils
 
 class TC01_AddUser(unittest.TestCase):
 
-    # def __init__(self):
-    #     self.driver = None
-
     @classmethod
     def setUpClass(cls):
         cls.cu = commonUtils()
@@ -32,7 +29,7 @@ class TC01_AddUser(unittest.TestCase):
         try:
             cu = commonUtils()
             # userToAdd = userToAddDelete
-            userToAdd = "user"+cu.getTodaysTimeStamp()
+            userToAdd = "user"+cu.getTodaysTimeStamp()  #user054020
             self.driver.get("http://localhost:81/orangehrm/symfony/web/index.php/admin/viewSystemUsers")
             self.driver.find_element(By.ID, "btnAdd").click()
             self.driver.find_element(By.XPATH, "//h1[@id='UserHeading' and text()='Add User']").is_displayed()
@@ -57,9 +54,6 @@ class TC01_AddUser(unittest.TestCase):
         lo = Logout()
         driver = cls.getDriver(cls)
         cls.assertTrue(lo.logout(driver), "The user is not able to Logout successfully")
-        # lo.logout(driver)
-        # logout(cls.getDriver())
-        # logout.logout(self.driver)
 
 if __name__ == '__main__':
     unittest.main()

@@ -2,7 +2,6 @@ import os
 import unittest
 
 import HtmlTestRunner
-import xmlrunner as xmlrunner
 
 from TestCases.TC01_AddUser import TC01_AddUser
 from TestCases.TC02_DeleteUser import TC02_DeleteUser
@@ -27,30 +26,27 @@ cu = commonUtils()
 config = cu.readProperties("C:\\Users\\USER\\PycharmProjects\\MarchDemoFramework\\commonUtils\\config.properties")
 suiteName = config["suiteName"]
 
-# Open report file
-outputFile = open(os.getcwd()+"/SuiteReport/SuiteReport.html", "w")
-# runner = HtmlTestRunner
+# below runner is the alternate way of suite execution with report
+# test_runner = HtmlTestRunner.HTMLTestRunner(output="../Reports/NewHTMLReports", verbosity=1)
 
-# test_runner = HtmlTestRunner.HTMLTestRunner(output="../Reports/NewHTMLReports", verbosity=2)
-test_runner = HtmlTestRunner.HTMLTestRunner(stream=outputFile, report_title=suiteName+" TEST REPORT")
 if suiteName == "SMOKE":
     print("Runing SMOKE Test Suite")
-    test_runner.run(smokeTestSuite)
-    # unittest.TextTestRunner().run(smokeTestSuite)
+    # test_runner.run(smokeTestSuite)               #this is the alternate way of suite execution with report
+    # unittest.TextTestRunner().run(smokeTestSuite) #this runner will run the tests but it wil lnot generate the report
 elif suiteName == "REGRESSION":
     print("Runing REGRESSION Test Suite")
-    test_runner.run(regressionTestSuite)
+    # test_runner.run(regressionTestSuite)
     # unittest.TextTestRunner().run(regressionTestSuite)
 elif suiteName == "FUNCTIONAL":
     print("Runing FUNCTIONAL Test Suite")
-    test_runner.run(functionalTestSuite)
+    # test_runner.run(functionalTestSuite)
     # unittest.TextTestRunner().run(functionalTestSuite)
 elif suiteName == "INTEGRATION":
     print("Runing INTEGRATION Test Suite")
-    test_runner.run(integrationTestSuite)
+    # test_runner.run(integrationTestSuite)
     # unittest.TextTestRunner().run(integrationTestSuite)
 
-# unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output="../Reports/HTMLReports"))
-# unittest.main(testRunner=xmlrunner.XMLTestRunner(output="../Reports/XMLReports"))
+unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output="../Reports/HTMLReports"))
+
 
 

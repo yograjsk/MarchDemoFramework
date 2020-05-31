@@ -10,6 +10,7 @@ from TestCases.TC03_HandleSimpleAlerts import TC03_HandleSimpleAlerts
 from TestCases.TC04_UploadFile import TC04_UploadFile
 from TestCases.TC05_DownloadFile import TC05_DownloadFile
 from commonUtils.commonUtilities import commonUtils
+from concurrencytest import ConcurrentTestSuite, fork_for_tests
 
 testCase1 = unittest.TestLoader().loadTestsFromTestCase(TC01_AddUser)
 testCase2 = unittest.TestLoader().loadTestsFromTestCase(TC02_DeleteUser)
@@ -26,6 +27,7 @@ integrationTestSuite = unittest.TestSuite([testCase4, testCase5])
 cu = commonUtils()
 config = cu.readProperties("C:\\Users\\USER\\PycharmProjects\\MarchDemoFramework\\commonUtils\\config.properties")
 suiteName = config["suiteName"]
+parallelRun = config["parallelRun"]
 
 # Open report file
 # outputFile = open(os.getcwd()+"\\Reports\\SuiteReports\\SuiteReport.html", "w")
@@ -33,23 +35,38 @@ suiteName = config["suiteName"]
 
 test_runner = HtmlTestRunner.HTMLTestRunner(output="../Reports/NewHTMLReports",
                                             verbosity=2, report_title=suiteName+" TEST REPORT")
+
+# Parallel runs:
+runner = unittest.TextTestRunner()
+
 # test_runner = HtmlTestRunner.HTMLTestRunner(stream=outputFile, report_title=suiteName+" TEST REPORT")
 if suiteName == "SMOKE":
     print("Runing SMOKE Test Suite")
-    test_runner.run(smokeTestSuite)
+    parallelRun = ConcurrentTestSuite(smokeTestSuite, fork_for_tests(5))
+    serialRun = smokeTestSuite
+    # test_runner.run(smokeTestSuite)
     # unittest.TextTestRunner().run(smokeTestSuite)
 elif suiteName == "REGRESSION":
     print("Runing REGRESSION Test Suite")
-    test_runner.run(regressionTestSuite)
+    parallelRun = ConcurrentTestSuite(regressionTestSuite, fork_for_tests(5))
+    serialRun = regressionTestSuite
+    # test_runner.run(regressionTestSuite)
     # unittest.TextTestRunner().run(regressionTestSuite)
 elif suiteName == "FUNCTIONAL":
     print("Runing FUNCTIONAL Test Suite")
-    test_runner.run(functionalTestSuite)
+    parallelRun = ConcurrentTestSuite(functionalTestSuite, fork_for_tests(5))
+    serialRun = functionalTestSuite
+    # test_runner.run(functionalTestSuite)
     # unittest.TextTestRunner().run(functionalTestSuite)
 elif suiteName == "INTEGRATION":
     print("Runing INTEGRATION Test Suite")
-    test_runner.run(integrationTestSuite)
+    parallelRun = ConcurrentTestSuite(integrationTestSuite, fork_for_tests(5))
+    serialRun = integrationTestSuite
+    # test_runner.run(integrationTestSuite)
     # unittest.TextTestRunner().run(integrationTestSuite)
+
+runner.run(parallelRun)
+# test_runner.run(serialRun)
 
 # unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output="../Reports/HTMLReports"))
 # unittest.main(testRunner=xmlrunner.XMLTestRunner(output="../Reports/XMLReports"))
