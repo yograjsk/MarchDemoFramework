@@ -15,13 +15,6 @@ class TC03_HandleSimpleAlerts(unittest.TestCase):
     def setUpClass(cls):
         cls.cu = commonUtils()
         cls.driver = cls.cu.getBrowser("Chrome")
-        # self.driver = self.__cu.getBrowser()
-        # cls.driver = cu.getBrowser()
-        # cls.login = Login()
-        # cls.browser = cls.login.login("user", "password123")
-
-    # def setDriver(self, driver):
-    #     self.driver = driver
 
     def getDriver(self):
         return self.driver
