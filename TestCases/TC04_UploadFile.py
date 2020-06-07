@@ -13,18 +13,11 @@ class TC04_UploadFile(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cu = commonUtils()
-        # self.driver = self.__cu.getBrowser()
-        # cls.driver = cu.getBrowser()
         cls.login = Login()
         cls.driver = cls.login.login("user", "password123")
 
-    # def setDriver(self, driver):
-    #     self.driver = driver
-
     def getDriver(self):
         return self.driver
-
-
 
     def test_UploadFile(self):
         cu = commonUtils()

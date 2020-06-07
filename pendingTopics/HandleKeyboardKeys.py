@@ -13,7 +13,7 @@ class workingWithKeys():
         self.driver.find_element(By.NAME, "txtUsername").send_keys("user")
         # self.driver.find_element(By.NAME, "txtPassword").send_keys("password123" + Keys.ENTER)
         # self.driver.find_element(By.NAME, "Submit")
-        ActionChains(self.driver).key_down(Keys.CONTROL).send_keys('n').key_up(Keys.CONTROL).perform()
+        # ActionChains(self.driver).key_down(Keys.CONTROL).send_keys('n').key_up(Keys.CONTROL).perform()
 
 
 

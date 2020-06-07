@@ -65,8 +65,8 @@ elif suiteName == "INTEGRATION":
     # test_runner.run(integrationTestSuite)
     # unittest.TextTestRunner().run(integrationTestSuite)
 
-runner.run(parallelRun)
-# test_runner.run(serialRun)
+# runner.run(parallelRun)
+test_runner.run(serialRun)
 
 # unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output="../Reports/HTMLReports"))
 # unittest.main(testRunner=xmlrunner.XMLTestRunner(output="../Reports/XMLReports"))
