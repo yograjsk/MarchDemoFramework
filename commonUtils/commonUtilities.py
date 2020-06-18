@@ -78,8 +78,8 @@ class commonUtils():
                 chrome_options.add_argument("--headless")
             return webdriver.Chrome(chrome_options=chrome_options,
                     # executable_path="C:\\Users\\USER\\PycharmProjects\\MarchDemoFramework\\drivers\\chromedriver.exe")
-                    # executable_path="drivers/chromedriver.exe")
-                    executable_path="../drivers/chromedriver.exe")
+                    executable_path="drivers/chromedriver.exe")
+                    # executable_path="../drivers/chromedriver.exe")
             # return webdriver.Chrome(executable_path="C:/Users/USER/PycharmProjects/March2020/drivers/chromedriver.exe")
             # return webdriver.Chrome(executable_path="drivers/chromedriver.exe")
         elif browserName in ("Firefox", "FF", "firefox", "ff"):
