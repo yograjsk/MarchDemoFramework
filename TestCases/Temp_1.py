@@ -25,7 +25,6 @@ class Temp(ObjectRepo):
             for j in tableCells:
                 print(j.text)
 
-        self.driver.find_elements_by_xpath("//")
 
 t = Temp()
 t.temp()
