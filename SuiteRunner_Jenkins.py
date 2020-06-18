@@ -23,7 +23,7 @@ functionalTestSuite = unittest.TestSuite([testCase1, testCase2, testCase3, testC
 integrationTestSuite = unittest.TestSuite([testCase4, testCase5])
 
 cu = commonUtils()
-config = cu.readProperties("C:\\Users\\USER\\PycharmProjects\\MarchDemoFramework\\commonUtils\\config.properties")
+config = cu.readProperties("commonUtils/config.properties")
 suiteName = config["suiteName"]
 
 # below runner is the alternate way of suite execution with report
