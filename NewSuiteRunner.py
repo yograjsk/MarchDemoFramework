@@ -34,7 +34,9 @@ parallelRun = config["parallelRun"]
 # runner = HtmlTestRunner
 
 test_runner = HtmlTestRunner.HTMLTestRunner(output="../Reports/NewHTMLReports",
-                                            verbosity=2, report_title=suiteName+" TEST REPORT")
+                                            verbosity=2,
+                                            report_title=suiteName+" TEST REPORT",
+                                            combine_reports=True)
 
 # Parallel runs:
 runner = unittest.TextTestRunner()
