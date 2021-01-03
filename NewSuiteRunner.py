@@ -33,7 +33,7 @@ parallelRun = config["parallelRun"]
 # outputFile = open(os.getcwd()+"\\Reports\\SuiteReports\\SuiteReport.html", "w")
 # runner = HtmlTestRunner
 
-test_runner = HtmlTestRunner.HTMLTestRunner(output="../Reports/NewHTMLReports",
+test_runner = HtmlTestRunner.HTMLTestRunner(output="./Reports/NewHTMLReports",
                                             verbosity=2,
                                             report_title=suiteName+" TEST REPORT",
                                             combine_reports=True)
